@@ -1,0 +1,162 @@
+k means cluster
+l2norm
+if any cluster has 0 centroids.. eliminate the cluster..or alternative is randomly reinitialize...
+what k means algorightm is doing is trying to find assignments of points of clusters centroids as well as find location of clusters centroids that minimizes the squared distance...
+the move cluster centroid in k means formula tries to minimize the distortion
+
+run multipel time to find best local optima for k value... in random initialization
+
+to choose best value of k we can use elbow method(altough not recommanded)
+
+principal components analysis ...commonly used for visualization...used to visualize the data...
+pca: find new axis and coordinations.. reducing the features,,
+
+axis we want to choose.. the best so we can max get the info of all points..max variance
+2nd axis always 90 degree to first 3rd axis... also 90 degree to 1st and second...
+
+it is totally different algorithm.. nothing to do with linear regression..it is unsupervised..
+pca treats all axis equally  and find z axis.. to make line segments.. max variance.. 
+pca can have many features ..
+reduce the number of features...
+unlike linear regression with 2 
+
+there is step reconstructuin which can get values of features from which z was derived(approximate) 
+how to calc.,.. z value * length one vector...(in matrix)
+
+
+in pca.. mean normalization automatically hpn
+and so is fit
+
+examine how much variance is explained by each principal components..done by .. explained_variance_ratio...
+when suitable got. use transform method to transform into new axes 
+but we must declare how many principal components need to be fit... in n_components...
+declare notation then fit it... notation in the sense.. variable for declaration of new axis...
+
+
+
+application of pca now least frequently used ..
+data compression...now not used so much bcz now we have large storage.. large transfer rate..
+speed up training of a supervised learning model..it doesn't help in deep learning but do in svm...
+
+
+in reinforcement learning... position is pointed as state
+it contains reward function... tells what's doing well and what's poorly
+we focus on rewards in reinforcement learning.. that's how we know that model is doing well or poorly
+when the model reach at particular end we say it as terminal state...in our language.. day end...
+that meant... after the model get to one of the terminals state, get a reward at that state but then nothing happens after that maybe.. the model run out of time for that day
+so in summary.. at every state the model is at state, action and get some reward( also known as weights) and as a result of that action.. it create some new sstate..s prime
+
+return in reinforment learning is sum of all the stage it moves till reach one terminal and also.. a discount factor which is less then 1..it can be anything .. but.. it must be multiplied with each stage starting with power 0 and increasing as stage progress..
+( write the formula)
+this discount factor is represented as (gamma)  and return = R1+ (gamma)R2+....(gamma)^n-1 (Rn)(until terminal state)
+what discount factor does..it makes the algorithm a little impatient bcz the return gives full credit  to first step and little less as step progress bcz of discount factor,......
+sooner results in a higher value for the total return...
+returns depends on rewards which depends on action we take .
+if the return comes negative.. it get pushed as far as possible in to future actions
+
+a policy is a function pi(s)=a mapping from states to actions, that tells you what action a to take in a  given state s 
+goal of reinforcement learning is  to find a policy pi that tells you what action(a = pi(S)) to take in every state(s) so as to maximize the return.
+
+pi is also called as controller
+
+Markov decision process(mdp): the future only depends on current states and not on anything that might have occurred prior  to getting to the current state ..
+in simple terms.. it depends on where we are now.. not on how you get there..
+picking action...
+state action value function...Q(s,a) = return 
+s= state and a = action
+ point 1... start in state s 
+ponint 2 .. take action a(once).
+point 3... then behave optimally after that..
+then we will take whatever action will result in highest possible return 
+as it is denoted by "Q" it is also often called Q function...
+so Q function and state action value function are used interchangeable and  it tells you what are your returns or really what is the value ..how good is it...
+
+the best possible return from state s is max Q(s,a)
+the best possible action in state s is the action a that gives max Q(s,a)..
+
+
+lower the gamma value.. more impatient... 
+q) how to decide the gamma value... 
+
+BELLMAN EQUATION
+q) how to compute these values Q of S,A?
+bellman eq. will help us compute state action value function
+
+s: current state
+a: current action
+s' : state you get  to after taking action a
+a' : action that you take in state s'
+
+Q(s,a)= R(s) + (gamma)max over all possible actions (a') Q(s',a')
+in terminal state.. Q(s,a) = R(S)
+
+q) when and why to use bellman equation...
+over Markov decision process(mdp)
+
+
+
+we use bellman eq.. bcz it shorts the equation..
+also..R(S) is also known as immediate reward.. same function as R1
+and that max side.. is return optimally function..
+
+
+
+stochastic environment..
+we need to maximime the sum of avg discount.. as by mistake the model can go on different stage then it should go to 
+
+we use expected return = avg (Q(s,a))
+in mathematical.. E[R1 + (gamma)R2+ ....]
+as if applied to bellman eq.. s' will become random.. it can be either state... hence.. an avg operator is used...
+Q(s,a)= R(s) + (gamma)E[max over all possible actions (a') Q(s',a')]
+
+
+discrete vs continuous state...
+in continuous state we also consider the fact how fast is that state or axis changing...
+in continuous .. it's a vector of numbers ... any of which could take any of a large number of values.
+
+
+deep reinforcement learning  or dqn.. deep q-network
+we use neural network in it
+gamma value is above 0.95
+we encode some main functions... which are actions..
+as per Q value.. that particular parameter is fired...whoever value is higher...it uses bellman equation..then supervised learning..map to x to y 
+we use gradient descent later to improve the parameter.. but  for initial.. the value of Q(s,a) is random
+
+technique of storing most recent examples only  is called replay buffer...
+
+
+role of neural is to compute all possible actions simultaneously... 
+hence. running inference once.. will get all actions output..and then we can pic k max a action
+
+epsilon greedy policy
+while we learn how to approximate Q(s,a) we need to take some actions...how do we pick those actions while learning?
+answer.. epsilon greedy policy..
+how to choose  action..
+with probability 0.95,  pick the action a with max Q(s,a)...this is called greedy.. or exploitation ...
+for 0.05(epsilon value )..pick random... this step is called exploration step
+at start make epsilon value high then decrease overtime...
+
+mini-batch and soft updates
+mini-batch=speed up algorithm..
+soft update = do better job to converge to a good solution
+
+
+mini batch pick some subset from all examples and use that in gradient descent instead of that large data... to make it fast
+
+what minibatch do.. for first itreration.. it only look at that particular subset of data... and so on for others.. hence.. every iteration is looking at just a subset of the data...
+
+it might be noisy...
+it is much faster algorightm when have tons of data...
+but this will make abrust change in Qnew in dqn
+soft update method helps prevent Qnew from getting worse...
+in soft update we only accept a little bit of new value.. say.. 
+W= 0.01 Wnew+ 0.99 W
+this W is a hyperparameter
+
+
+limitations of reinformcement learning..
+much easier to get work on virtual then real
+there are far few applications..
+
+
+gym is a toolkit used in reinforce learning
